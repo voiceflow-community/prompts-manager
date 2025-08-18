@@ -238,12 +238,6 @@ Make sure to set all environment variables in your production environment:
 - Use production Google OAuth credentials
 - Ensure GitHub token has appropriate permissions
 
-### Vercel Deployment
-
-1. Connect your GitHub repository to Vercel
-2. Set environment variables in Vercel dashboard
-3. Deploy
-
 ## Contributing
 
 1. Fork the repository
@@ -258,4 +252,4 @@ Make sure to set all environment variables in your production environment:
 
 ## Support
 
-For questions or issues, please contact the Voiceflow team or create an issue in the repository.
+For questions or issues, create an issue in the repository.

@@ -86,9 +86,9 @@ RUN mkdir -p /home/nextjs/.npm /home/nextjs/.cache && \
 
 USER nextjs
 
-EXPOSE 3160
+EXPOSE 3000
 
-ENV PORT=3160
+ENV PORT=3000
 # set hostname to localhost
 ENV HOSTNAME="0.0.0.0"
 

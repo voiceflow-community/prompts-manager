@@ -1,6 +1,6 @@
-# Deployment Guide for Coolify
+# Docker Deployment Guide
 
-This document provides instructions for deploying the Voiceflow Prompts Manager on Coolify using Docker.
+This document provides instructions for deploying the Voiceflow Prompts Manager using Docker in any container hosting environment.
 
 ## Files Created
 
@@ -25,7 +25,7 @@ npm run db:migrate
 
 ### 2. Environment Variables Configuration
 
-In Coolify, configure the following environment variables:
+Configure the following environment variables in your deployment environment:
 
 #### Required Runtime Variables
 
@@ -47,44 +47,58 @@ In Coolify, configure the following environment variables:
 | `PORT` | Custom port for the application | `3000` |
 | `NEXT_PUBLIC_DISABLE_AUTH` | Disable authentication entirely | `false` |
 
-#### Build-Time vs Runtime Variables
+## Deployment Options
 
-**Build-time variables:** None required for this application.
+### Option 1: Docker Compose (Recommended)
 
-**Runtime variables:** All variables listed above are runtime variables and should be configured in Coolify's environment section.
+1. **Clone the repository:**
+   ```bash
+   git clone <your-repo-url>
+   cd voiceflow-prompts-manager
+   ```
 
-## Coolify Deployment Steps
+2. **Configure environment variables:**
+   ```bash
+   # Copy the example file and edit with your values
+   cp env.production.example .env.production
+   # Edit .env.production with your actual values
+   ```
 
-### 1. Create New Service
+3. **Deploy with Docker Compose:**
+   ```bash
+   docker-compose up -d
+   ```
 
-1. In Coolify, create a new "Docker Compose" service
-2. Connect your Git repository
-3. Set the source as your repository URL
+### Option 2: Standalone Docker Container
 
-### 2. Configure Environment Variables
+1. **Build the Docker image:**
+   ```bash
+   docker build -t voiceflow-prompts-manager .
+   ```
 
-In the Environment section, add all the required runtime variables listed above.
+2. **Create a persistent volume:**
+   ```bash
+   docker volume create voiceflow_data
+   ```
 
-### 3. Configure Port Mapping
+3. **Run the container:**
+   ```bash
+   docker run -d \
+     --name voiceflow-prompts-manager \
+     -p 3000:3000 \
+     -v voiceflow_data:/app/data \
+     --env-file .env.production \
+     voiceflow-prompts-manager
+   ```
 
-- **Internal Port:** `3000` (or your custom `PORT` value)
-- **External Port:** Choose your desired external port (e.g., `80`, `443`, or custom)
+### Option 3: Container Orchestration Platforms
 
-### 4. Volume Configuration
+For deployment on platforms like Docker Swarm, Kubernetes, or container hosting services:
 
-The docker-compose.yml automatically configures a persistent volume:
-- **Volume Name:** `voiceflow_data`
-- **Mount Path:** `/app/data`
-- **Purpose:** Persists SQLite database between deployments
-
-### 5. Deploy
-
-Click "Deploy" in Coolify. The deployment process will:
-
-1. Build the Docker image using the multi-stage Dockerfile
-2. Generate Prisma client during build
-3. Create the production Next.js build
-4. Start the container with persistent volume mounted
+1. **Use the provided docker-compose.yml as a reference**
+2. **Configure environment variables according to your platform**
+3. **Ensure persistent storage is configured for `/app/data`**
+4. **Expose port 3000 (or your custom PORT value)**
 
 ## Database Initialization
 
@@ -95,7 +109,7 @@ On first deployment, you'll need to initialize the database schema:
 Connect to your running container and run:
 
 ```bash
-docker exec -it <container-name> npx prisma db push
+docker exec -it voiceflow-prompts-manager npx prisma db push
 ```
 
 ### Option 2: Using Prisma migrations
@@ -103,15 +117,26 @@ docker exec -it <container-name> npx prisma db push
 If you prefer migrations:
 
 ```bash
-docker exec -it <container-name> npx prisma migrate deploy
+docker exec -it voiceflow-prompts-manager npx prisma migrate deploy
+```
+
+### For Docker Compose deployments:
+
+```bash
+docker-compose exec app npx prisma db push
 ```
 
 ## Health Checks
 
-The application includes a health check endpoint that Coolify can use:
+The application includes a health check endpoint for monitoring:
 - **Endpoint:** `/api/stats`
 - **Method:** GET
 - **Expected Response:** 200 OK
+
+Use this endpoint for:
+- Load balancer health checks
+- Container orchestration platform readiness probes
+- Monitoring and alerting systems
 
 ## Troubleshooting
 
@@ -121,25 +146,29 @@ If you encounter database connection issues:
 
 1. **Check file permissions:**
    ```bash
-   docker exec -it <container-name> ls -la /app/data/
+   docker exec -it voiceflow-prompts-manager ls -la /app/data/
    ```
 
 2. **Verify database file exists:**
    ```bash
-   docker exec -it <container-name> ls -la /app/data/prod.db
+   docker exec -it voiceflow-prompts-manager ls -la /app/data/prod.db
    ```
 
 3. **Check environment variables:**
    ```bash
-   docker exec -it <container-name> env | grep DATABASE_URL
+   docker exec -it voiceflow-prompts-manager env | grep DATABASE_URL
    ```
 
 ### Application Logs
 
-View application logs in Coolify or using Docker:
+View application logs using Docker:
 
 ```bash
-docker logs <container-name> -f
+# For standalone container
+docker logs voiceflow-prompts-manager -f
+
+# For Docker Compose
+docker-compose logs app -f
 ```
 
 ### Volume Persistence
@@ -154,13 +183,29 @@ docker volume ls | grep voiceflow_data
 docker volume inspect voiceflow_data
 ```
 
+### Container Status
+
+Check if the container is running properly:
+
+```bash
+# List running containers
+docker ps
+
+# Check container status
+docker inspect voiceflow-prompts-manager
+```
+
 ## Custom Port Configuration
 
 To use a custom port:
 
-1. Set the `PORT` environment variable in Coolify
-2. Update the port mapping in Coolify's service configuration
-3. Ensure your `NEXTAUTH_URL` includes the correct port if non-standard
+1. **Set the `PORT` environment variable** in your environment configuration
+2. **Update port mapping** when running the container:
+   ```bash
+   # For custom port 8080
+   docker run -p 8080:8080 -e PORT=8080 voiceflow-prompts-manager
+   ```
+3. **Ensure your `NEXTAUTH_URL`** includes the correct port if non-standard
 
 ## Authentication Configuration
 
@@ -194,14 +239,102 @@ To use a custom port:
 
 The persistent volume ensures your database survives redeployments. When updating:
 
-1. Your database will be preserved in the `voiceflow_data` volume
-2. Application code will be updated from your Git repository
-3. Dependencies will be rebuilt if package.json changed
+### Docker Compose Updates
+
+```bash
+# Pull latest changes and rebuild
+git pull
+docker-compose down
+docker-compose up -d --build
+```
+
+### Standalone Container Updates
+
+```bash
+# Stop and remove old container
+docker stop voiceflow-prompts-manager
+docker rm voiceflow-prompts-manager
+
+# Rebuild image with latest code
+docker build -t voiceflow-prompts-manager .
+
+# Start new container (volume persists)
+docker run -d \
+  --name voiceflow-prompts-manager \
+  -p 3000:3000 \
+  -v voiceflow_data:/app/data \
+  --env-file .env.production \
+  voiceflow-prompts-manager
+```
+
+**Important Notes:**
+- Your database will be preserved in the `voiceflow_data` volume
+- Environment variables should be updated as needed
+- Dependencies will be rebuilt if package.json changed
 
 ## Scaling Considerations
 
 This setup uses SQLite which is suitable for single-instance deployments. For high-availability or multi-instance deployments, consider:
 
-1. Migrating to PostgreSQL or MySQL
-2. Using external database service
-3. Implementing database connection pooling
+1. **Migrating to PostgreSQL or MySQL**
+   - Update `DATABASE_URL` environment variable
+   - Use managed database services (AWS RDS, Google Cloud SQL, etc.)
+
+2. **Load Balancing**
+   - Use reverse proxy (nginx, traefik, etc.)
+   - Configure session affinity or external session storage
+
+3. **Container Orchestration**
+   - Kubernetes deployments with persistent volumes
+   - Docker Swarm with replicated services
+   - Managed container services (AWS ECS, Google Cloud Run, etc.)
+
+## Production Deployment Examples
+
+### AWS ECS with Load Balancer
+
+```yaml
+# Use the provided Dockerfile and docker-compose.yml as reference
+# Configure ECS task definition with:
+# - Persistent EFS volumes for /app/data
+# - Environment variables from AWS Systems Manager
+# - Application Load Balancer for high availability
+```
+
+### Kubernetes Deployment
+
+```yaml
+# Example deployment configuration
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voiceflow-prompts-manager
+spec:
+  replicas: 1  # Single instance due to SQLite
+  selector:
+    matchLabels:
+      app: voiceflow-prompts-manager
+  template:
+    metadata:
+      labels:
+        app: voiceflow-prompts-manager
+    spec:
+      containers:
+      - name: app
+        image: voiceflow-prompts-manager:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NEXTAUTH_URL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: nextauth-url
+        volumeMounts:
+        - name: data-volume
+          mountPath: /app/data
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: voiceflow-data-pvc
+```
