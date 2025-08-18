@@ -8,17 +8,27 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package.json package-lock.json* ./
+# Set OpenSSL environment variables for Prisma
+ENV OPENSSL_ROOT_DIR=/usr
+ENV OPENSSL_LIB_DIR=/usr/lib/x86_64-linux-gnu
+ENV OPENSSL_INCLUDE_DIR=/usr/include/openssl
+ENV PRISMA_CLI_BINARY_TARGETS="debian-openssl-3.0.x,linux-arm64-openssl-3.0.x"
 RUN npm ci
 
 # Rebuild the source code only when needed
 FROM base AS builder
+# Install OpenSSL for Prisma generation
+RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Generate Prisma Client with correct binary target
 ENV PRISMA_CLI_BINARY_TARGETS="debian-openssl-3.0.x,linux-arm64-openssl-3.0.x"
-RUN npx prisma generate
+ENV OPENSSL_ROOT_DIR=/usr
+ENV OPENSSL_LIB_DIR=/usr/lib/x86_64-linux-gnu
+ENV OPENSSL_INCLUDE_DIR=/usr/include/openssl
+RUN npx prisma generate --generator client
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
@@ -36,6 +46,11 @@ WORKDIR /app
 ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 ENV NEXT_TELEMETRY_DISABLED=1
+
+# Set OpenSSL environment variables for Prisma runtime
+ENV OPENSSL_ROOT_DIR=/usr
+ENV OPENSSL_LIB_DIR=/usr/lib/x86_64-linux-gnu
+ENV OPENSSL_INCLUDE_DIR=/usr/include/openssl
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 --home /home/nextjs --shell /bin/bash nextjs
