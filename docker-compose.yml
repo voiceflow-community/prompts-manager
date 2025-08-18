@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "${PORT:-3000}:3000"
+      - "${PORT:-3000}:${PORT:-3000}"
     environment:
       # NextAuth Configuration
       - NEXTAUTH_URL=${NEXTAUTH_URL}

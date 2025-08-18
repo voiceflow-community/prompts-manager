@@ -16,7 +16,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Generate Prisma Client
+# Generate Prisma Client with correct binary target
+ENV PRISMA_CLI_BINARY_TARGETS="debian-openssl-3.0.x,linux-arm64-openssl-3.0.x"
 RUN npx prisma generate
 
 # Next.js collects completely anonymous telemetry data about general usage.
@@ -60,9 +61,9 @@ RUN mkdir -p /app/data && chown nextjs:nodejs /app/data
 
 USER nextjs
 
-EXPOSE 3000
+EXPOSE 3160
 
-ENV PORT=3000
+ENV PORT=3160
 # set hostname to localhost
 ENV HOSTNAME="0.0.0.0"
 
