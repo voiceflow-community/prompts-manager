@@ -29,8 +29,8 @@ RUN npm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
-# Install OpenSSL for Prisma runtime
-RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+# Install OpenSSL and curl for Prisma runtime and health checks
+RUN apt-get update && apt-get install -y openssl curl && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -75,7 +75,7 @@ EXPOSE 3160
 
 ENV PORT=3160
 # set hostname to localhost
-ENV HOSTNAME="127.0.0.1"
+ENV HOSTNAME="0.0.0.0"
 
 # Use the startup script that initializes the database and starts the application
 CMD ["./start.sh"]

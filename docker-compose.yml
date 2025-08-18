@@ -1,12 +1,10 @@
-version: '3.8'
-
 services:
   voiceflow-prompts-manager:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "${PORT:-3000}:${PORT:-3000}"
+      - "${PORT:-3160}:3160"
     environment:
       # NextAuth Configuration
       - NEXTAUTH_URL=${NEXTAUTH_URL}
@@ -31,7 +29,7 @@ services:
       - voiceflow_data:/app/data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/stats || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:3160/api/stats || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
