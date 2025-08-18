@@ -38,7 +38,7 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN adduser --system --uid 1001 --home /home/nextjs --shell /bin/bash nextjs
 
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
@@ -55,9 +55,19 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.bin ./node_modules/.bin
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
+
+# Copy startup script
+COPY --chown=nextjs:nodejs start.sh ./start.sh
+RUN chmod +x ./start.sh
 
 # Create data directory for SQLite database with proper permissions
 RUN mkdir -p /app/data && chown nextjs:nodejs /app/data
+
+# Setup proper home directory and npm cache for nextjs user
+RUN mkdir -p /home/nextjs/.npm /home/nextjs/.cache && \
+    chown -R nextjs:nodejs /home/nextjs
 
 USER nextjs
 
@@ -65,8 +75,7 @@ EXPOSE 3160
 
 ENV PORT=3160
 # set hostname to localhost
-ENV HOSTNAME="0.0.0.0"
+# ENV HOSTNAME="0.0.0.0"
 
-# server.js is created by next build from the standalone output
-# https://nextjs.org/docs/pages/api-reference/next-config-js/output
-CMD ["node", "server.js"]
+# Use the startup script that initializes the database and starts the application
+CMD ["./start.sh"]
