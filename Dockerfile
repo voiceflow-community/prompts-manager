@@ -75,7 +75,7 @@ EXPOSE 3160
 
 ENV PORT=3160
 # set hostname to localhost
-# ENV HOSTNAME="0.0.0.0"
+ENV HOSTNAME="127.0.0.1"
 
 # Use the startup script that initializes the database and starts the application
 CMD ["./start.sh"]
