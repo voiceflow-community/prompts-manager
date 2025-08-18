@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Prompt {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  category    String
+  model       String?
+  content     String
+  isPublished Boolean  @default(false)
+  publishedAt DateTime?
+  githubPath  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  versions    PromptVersion[]
+
+  @@map("prompts")
+}
+
+model PromptVersion {
+  id        String   @id @default(cuid())
+  promptId  String
+  version   Int
+  name      String
+  description String
+  category  String
+  model     String?
+  content   String
+  createdAt DateTime @default(now())
+
+  // Relations
+  prompt    Prompt   @relation(fields: [promptId], references: [id], onDelete: Cascade)
+
+  @@unique([promptId, version])
+  @@map("prompt_versions")
+}

@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  voiceflow-prompts-manager:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      # NextAuth Configuration
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+
+      # Google OAuth Configuration
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+
+      # GitHub Configuration
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - GITHUB_OWNER=${GITHUB_OWNER}
+      - GITHUB_REPO=${GITHUB_REPO}
+
+      # Database Configuration (SQLite file path in container)
+      - DATABASE_URL=file:/app/data/prod.db
+
+      # Environment
+      - NODE_ENV=production
+    volumes:
+      # Persist SQLite database between deployments
+      - voiceflow_data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/stats || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  voiceflow_data:
+    driver: local

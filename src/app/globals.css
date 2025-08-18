@@ -1,0 +1,218 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 3%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 3%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 20%;
+    --input: 0 0% 15%;
+    --ring: 0 0% 98%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* MDEditor Dark Mode Styling */
+.dark .w-md-editor {
+  background-color: hsl(var(--card));
+  border-color: hsl(var(--border));
+}
+
+.dark .w-md-editor.w-md-editor-focus {
+  border-color: hsl(var(--ring));
+}
+
+.dark .w-md-editor-text-input,
+.dark .w-md-editor-text-textarea,
+.dark .w-md-editor-text {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+  border-color: hsl(var(--border));
+}
+
+.dark .w-md-editor-toolbar {
+  background-color: hsl(var(--card));
+  border-color: hsl(var(--border));
+}
+
+.dark .w-md-editor-toolbar li button {
+  color: hsl(var(--foreground));
+}
+
+.dark .w-md-editor-toolbar li button:hover {
+  background-color: hsl(var(--accent));
+}
+
+/* Additional MDEditor dark mode fixes for text visibility */
+.dark .w-md-editor-text-container {
+  background-color: hsl(var(--background)) !important;
+}
+
+.dark .w-md-editor-text-container .w-md-editor-text {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.dark .w-md-editor-text-container .w-md-editor-text-input {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.dark .w-md-editor-text-container .w-md-editor-text-textarea {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Ensure placeholder text is visible in dark mode */
+.dark .w-md-editor-text-textarea::placeholder {
+  color: hsl(var(--muted-foreground)) !important;
+}
+
+/* Fix any remaining text visibility issues */
+.dark .w-md-editor *[contenteditable="true"] {
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Force text visibility with maximum specificity */
+.dark .w-md-editor .w-md-editor-text-container .w-md-editor-text textarea {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.dark .w-md-editor .w-md-editor-text-container .w-md-editor-text textarea.w-md-editor-text-textarea {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Target the actual input area more specifically */
+.dark .w-md-editor-input {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Force all text elements in the editor */
+.dark .w-md-editor textarea,
+.dark .w-md-editor input,
+.dark .w-md-editor [contenteditable],
+.dark .w-md-editor .w-md-editor-text-textarea,
+.dark .w-md-editor .w-md-editor-text-input,
+.dark .w-md-editor .w-md-editor-text {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+  caret-color: hsl(var(--foreground)) !important;
+}
+
+/* Specific targeting for the editor area */
+.dark .w-md-editor[data-color-mode="dark"] textarea,
+.dark .w-md-editor[data-color-mode="dark"] input,
+.dark .w-md-editor[data-color-mode="dark"] [contenteditable] {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+  caret-color: hsl(var(--foreground)) !important;
+}
+
+/* Wrapper-specific targeting */
+.dark-editor .w-md-editor textarea,
+.dark-editor .w-md-editor input,
+.dark-editor .w-md-editor [contenteditable],
+.dark-editor .w-md-editor .w-md-editor-text-textarea,
+.dark-editor .w-md-editor .w-md-editor-text-input,
+.dark-editor .w-md-editor .w-md-editor-text {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+  caret-color: hsl(var(--foreground)) !important;
+}
+
+/* Ultimate fallback - target by attribute */
+[data-color-mode="dark"] textarea,
+[data-color-mode="dark"] input,
+[data-color-mode="dark"] [contenteditable] {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+  caret-color: hsl(var(--foreground)) !important;
+}
+
+/* Force white text on dark backgrounds for MDEditor */
+.dark textarea[class*="w-md-editor"],
+.dark input[class*="w-md-editor"],
+.dark [contenteditable][class*="w-md-editor"] {
+  color: #ffffff !important;
+  background-color: #1a1a1a !important;
+}
+
+/* Ensure our custom textarea works properly in dark mode */
+.dark textarea.bg-background {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Super specific targeting for the MDEditor internals */
+.dark .w-md-editor .CodeMirror,
+.dark .w-md-editor .CodeMirror-scroll,
+.dark .w-md-editor .CodeMirror-lines,
+.dark .w-md-editor .CodeMirror-code {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+.dark .w-md-editor .CodeMirror-cursor {
+  border-left-color: #ffffff !important;
+}
+
+/* Target any possible text input in dark mode */
+[data-color-mode="dark"] * {
+  color: #ffffff !important;
+}
+
+[data-color-mode="dark"] textarea,
+[data-color-mode="dark"] input,
+[data-color-mode="dark"] [contenteditable] {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+}

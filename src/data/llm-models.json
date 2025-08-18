@@ -1,0 +1,207 @@
+{
+  "models": [
+    {
+      "item": "gemini-2.5-flash",
+      "vendor": "google",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.1
+    },
+    {
+      "item": "gemini-2.5-pro",
+      "vendor": "google",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.4
+    },
+    {
+      "item": "gemini-2.0-flash",
+      "vendor": "google",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.03
+    },
+    {
+      "item": "gpt-3.5-turbo-0125",
+      "vendor": "open-ai",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.125
+    },
+    {
+      "item": "gpt-3.5-turbo-1106",
+      "vendor": "open-ai",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.225
+    },
+    {
+      "item": "gpt-4-0613",
+      "vendor": "open-ai",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 7
+    },
+    {
+      "item": "gpt-4-1106-preview",
+      "vendor": "open-ai",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 2.5
+    },
+    {
+      "item": "gpt-4o-2024-11-20",
+      "vendor": "open-ai",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.675
+    },
+    {
+      "item": "gpt-4o-mini-2024-07-18",
+      "vendor": "open-ai",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.04
+    },
+    {
+      "item": "o3-mini-2025-01-31",
+      "vendor": "open-ai",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.3
+    },
+    {
+      "item": "o3-2025-04-16",
+      "vendor": "open-ai",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.6
+    },
+    {
+      "item": "o4-mini-2025-04-16",
+      "vendor": "open-ai",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.315
+    },
+    {
+      "item": "gpt-4.1-2025-04-14",
+      "vendor": "open-ai",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.575
+    },
+    {
+      "item": "gpt-4.1-mini-2025-04-14",
+      "vendor": "open-ai",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.115
+    },
+    {
+      "item": "gpt-4.1-nano-2025-04-14",
+      "vendor": "open-ai",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.03
+    },
+    {
+      "item": "gpt-5-2025-08-07",
+      "vendor": "open-ai",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.375
+    },
+    {
+      "item": "gpt-5-mini-2025-08-07",
+      "vendor": "open-ai",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.075
+    },
+    {
+      "item": "gpt-5-nano-2025-08-07",
+      "vendor": "open-ai",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.015
+    },
+    {
+      "item": "claude-opus-4-20250514",
+      "vendor": "anthropic",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 4.25
+    },
+    {
+      "item": "claude-sonnet-4-20250514",
+      "vendor": "anthropic",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.875
+    },
+    {
+      "item": "claude-3-7-sonnet-20250219",
+      "vendor": "anthropic",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.875
+    },
+    {
+      "item": "claude-3-5-haiku-20241022",
+      "vendor": "anthropic",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.25
+    },
+    {
+      "item": "claude-3-5-sonnet-20240620",
+      "vendor": "anthropic",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.875
+    },
+    {
+      "item": "claude-3-opus-20240229",
+      "vendor": "anthropic",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 4.25
+    },
+    {
+      "item": "claude-3-haiku-20240307",
+      "vendor": "anthropic",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.075
+    },
+    {
+      "item": "claude-3-sonnet-20240229",
+      "vendor": "anthropic",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.875
+    },
+    {
+      "item": "llama-3.1-8b-instant",
+      "vendor": "groq",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.0125
+    },
+    {
+      "item": "deepseek-r1-distill-llama-70b",
+      "vendor": "groq",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.19
+    },
+    {
+      "item": "gpt-4o-2024-08-06",
+      "vendor": "open-ai",
+      "category": "llm",
+      "unit": "credits per 1000 LLM tokens",
+      "value": 0.675
+    }
+  ]
+}
