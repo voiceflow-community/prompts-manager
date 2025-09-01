@@ -253,3 +253,5 @@ Make sure to set all environment variables in your production environment:
 ## Support
 
 For questions or issues, create an issue in the repository.
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=voiceflow-community_prompts-manager&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=voiceflow-community_prompts-manager)
